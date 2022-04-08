@@ -13,6 +13,8 @@ locals {
     disk_size = ng.disk_size
     capacity_type = ng.capacity_type
     instance_types = ng.instance_types
+    labels = ng.labels
+    taints = ng.taints
   } ]
   // build map of given node groups by node group name
   given_names_of_node_groups = [ for ng in local.given_node_groups : ng.name ]
@@ -37,6 +39,8 @@ locals {
     instance_types = local.given_node_groups_by_name[ng.given_node_group_name].instance_types
     zone_name = ng.zone_name
     subnet_id = local.node_group_subnet_ids_by_zone[ng.zone_name]
+    labels = local.given_node_groups_by_name[ng.given_node_group_name].labels
+    taints = local.given_node_groups_by_name[ng.given_node_group_name].taints
   } ]
   node_group_templates = zipmap(local.node_group_template_keys, local.node_group_template_values)
 }
@@ -68,6 +72,15 @@ resource aws_eks_node_group node_groups {
 
   lifecycle {
     ignore_changes = [ scaling_config[0].desired_size ]
+  }
+
+  dynamic taint {
+    for_each = toset(each.value.taints)
+    content {
+      key    = taint.value.key
+      value  = taint.value.value
+      effect = taint.value.effect
+    }
   }
 
   depends_on = [

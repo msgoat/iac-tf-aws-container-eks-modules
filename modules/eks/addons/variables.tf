@@ -28,13 +28,13 @@ variable common_tags {
   type = map(string)
 }
 
-variable addon_enabled {
-  description = "Controls if this addon is actually activated"
-  type = bool
-  default = true
-}
-
 variable eks_cluster_name {
   description = "Name of the target AWS EKS cluster"
   type = string
+}
+
+variable addon_aws_ebs_csi_enabled {
+  description = "Controls if the AWS EBS CSI Driver addon is actually activated; default: true"
+  type = bool
+  default = true
 }

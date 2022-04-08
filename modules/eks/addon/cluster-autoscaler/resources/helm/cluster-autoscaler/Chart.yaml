@@ -1,6 +1,0 @@
-apiVersion: v2
-name: cluster-autoscaler
-description: Helm chart for AWS EKS Cluster Autoscaler reengineered from AWS examples
-type: application
-version: 0.1.0
-appVersion: "v1.19.0"

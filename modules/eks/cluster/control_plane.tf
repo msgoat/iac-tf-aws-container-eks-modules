@@ -22,7 +22,7 @@ resource aws_eks_cluster control_plane {
   encryption_config {
     resources = ["secrets"]
     provider {
-      key_arn = aws_kms_key.cmk.arn
+      key_arn = aws_kms_key.cmk_secrets.arn
     }
   }
 
